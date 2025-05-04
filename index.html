@@ -1,0 +1,923 @@
+
+<!DOCTYPE html><html lang="pt-BR"><head><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex, nofollow">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domino's Pizzaria</title>
+    <!-- Meta Pixel Code -->
+
+<!-- End Meta Pixel Code -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #004680;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+            header .logo {
+                margin-left: 40px;
+            }
+
+                header .logo img {
+                    height: 50px;
+                }
+
+            header .right-menu {
+                display: flex;
+                align-items: center;
+                font-size: 16px;
+                font-weight: bold;
+                color: white;
+                margin-right: 30px;
+            }
+
+                header .right-menu .location-icon {
+                    width: 20px; /* Largura da imagem */
+                    height: 20px; /* Altura da imagem */
+                    margin-right: 10px; /* Espaçamento entre a imagem e o texto */
+                    vertical-align: middle; /* Alinhamento com o texto */
+                }
+
+        main {
+            padding: 20px;
+        }
+
+        .daily-offers {
+            text-align: center; /* Centraliza todo o conteúdo dentro da div */
+            margin: 0px 0;
+        }
+
+            .daily-offers h1 {
+                font-size: 24px;
+                color: #e31837; /* Vermelho da Domino's */
+                margin-bottom: 0px;
+            }
+
+            .daily-offers .offer-expiration-text {
+                font-size: 18px;
+                color: white; /* Texto branco */
+                background-color: #e31837; /* Fundo vermelho da Domino's */
+                display: inline-block; /* Permite ajustar padding sem ocupar 100% */
+                padding: 5px 10px; /* Espaçamento interno */
+                border-radius: 5px; /* Cantos arredondados */
+                margin-bottom: 0px;
+                font-weight: bold;
+            }
+
+        #countdown {
+            font-size: 20px;
+            color: #004680; /* Azul para destaque */
+            font-weight: bold;
+        }
+
+
+        .promo {
+            background-color: white;
+            border-radius: 8px;
+            margin: 20px 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+            .promo img {
+                width: 100%;
+                max-width: 300px;
+                border-radius: 8px;
+            }
+
+            .promo h2 {
+                margin: 10px 0;
+                color: #333;
+                text-align: center;
+            }
+            .promo h3 {
+                font-family: Arial black;
+                font-size: 30px;
+                color: #e31837;
+                margin: 0; /* Remove o espaçamento superior/inferior */
+            }
+            .promo p {
+                color: #555;
+            }
+
+            .promo .button {
+                margin-top: 15px;
+                padding: 10px 20px;
+                background-color: #e31837;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #004680;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 500px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            padding: 20px;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .step {
+            font-size: 14px;
+            font-weight: bold;
+            color: gray;
+            display: flex;
+            align-items: center;
+        }
+
+            .step:not(:last-child)::after {
+                content: "";
+                display: block;
+                width: 2px;
+                height: 30px;
+                background-color: gray;
+                margin: 0 10px;
+            }
+
+            .step.completed {
+                color: green;
+            }
+
+        .popup h3 {
+            margin-top: 0;
+        }
+
+        .popup .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .popup ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+            .popup ul li {
+                margin: 10px 0;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                padding: 10px;
+                border-radius: 5px;
+                transition: background-color 0.2s;
+            }
+
+                .popup ul li:hover {
+                    background-color: #f4f4f4;
+                }
+
+                .popup ul li img {
+                    width: 100px;
+                    height: 100px;
+                    margin-right: 10px;
+                    border-radius: 5px;
+                }
+
+                .popup ul li span {
+                    font-weight: bold;
+                    color: #004680;
+                }
+
+                .popup ul li input {
+                    display: none;
+                }
+
+                .popup ul li label {
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    cursor: pointer;
+                }
+
+                .popup ul li.selected {
+                    background-color: #cce4ff;
+                }
+
+        .popup a.button {
+            display: block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #e31837;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            opacity: 0.5;
+            pointer-events: none;
+            text-align: center;
+        }
+
+            .popup a.button.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .popup a.button:hover {
+                background-color: #004680;
+            }
+
+        .separator-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4a4a4a;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="Logo da Pizzaria">
+        </div>
+        <div class="right-menu">
+            <img src="localizacao.png" alt="Ícone de localização" class="location-icon">
+            <span>Próximo a você</span>
+        </div>
+    </header>
+
+    <main>
+        <div class="promo">
+            <div class="daily-offers">
+                <h3>Ofertas de Hoje:</h3>
+                <p class="offer-expiration-text">Domino`s 24 horas</p>
+                <p id="countdown"></p>
+            </div>
+            <img src="CRIATIVO5.png" alt="Promoção 1">
+            <h2>2 Pizzas Médias por R$ 39,90</h2>
+            <p>Escolha entre 6 sabores deliciosos para aproveitar essa oferta!</p>
+            <button class="button" onclick="openPopup('popup1')">Peça Agora</a>
+        </div>
+        <div class="promo">
+            <img src="CRIATIVO2.png" alt="Promoção 2">
+            <h2>2 Pizzas Grandes por R$ 49,90</h2>
+            <p>Escolha entre 6 sabores deliciosos para aproveitar essa oferta!</p>
+            <button class="button" onclick="openPopup('popup2')">Peça Agora</a>
+        </div>
+        <div class="promo">
+            <img src="criativo7.png" alt="Promoção 3">
+            <h2>1 Pizza Média por R$ 29,90</h2>
+            <p>Escolha entre 6 sabores deliciosos para aproveitar essa oferta!</p>
+            <button class="button" onclick="openPopup('popup3')">Peça Agora</a>
+        </div>
+        <div class="promo">
+            <img src="criativo8.png" alt="Promoção 4">
+            <h2>1 Pizza Grande por R$ 39,90</h2>
+            <p>Escolha entre 6 sabores deliciosos para aproveitar essa oferta!</p>
+            <button class="button" onclick="openPopup('popup4')">Peça Agora</a>
+        </div>
+    </main>
+
+    <footer>
+        © Domino's Pizzaria. Todos os direitos reservados.
+    </footer>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="popup" id="popup1">
+        <span class="close" onclick="closePopup()">×</span>
+        <div class="steps">
+            <div id="step1" class="step">1. Escolher sabor da Pizza 1</div>
+            <div id="step2" class="step">2. Escolher sabor da Pizza 2</div>
+            <div id="step3" class="step">3. Pagamento</div>
+        </div>
+        <h3>Promoção 1 - Selecione os Sabores</h3>
+        <div class="tab-content" id="tab-1-promo1">
+            <ul>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo1" value="3 Queijos" onclick="selectOptionPromo1(this, 1)">
+                        <img src="3queijos.jpg" alt="3 Queijos">
+                        <span>3 Queijos</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo1" value="Frango com Requeijão" onclick="selectOptionPromo1(this, 1)">
+                        <img src="frango.jpg" alt="Frango com Requeijão">
+                        <span>Frango com Requeijão</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo1" value="Margherita" onclick="selectOptionPromo1(this, 1)">
+                        <img src="marguerita.jpg" alt="Margherita">
+                        <span>Margherita</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo1" value="Calabresa" onclick="selectOptionPromo1(this, 1)">
+                        <img src="dominos.jpg" alt="Calabresa">
+                        <span>Calabresa</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo1" value="Pepperoni" onclick="selectOptionPromo1(this, 1)">
+                        <img src="peperoni.jpg" alt="Pepperoni">
+                        <span>Pepperoni</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo1" value="Queijo" onclick="selectOptionPromo1(this, 1)">
+                        <img src="queijo.jpg" alt="Queijo">
+                        <span>Queijo</span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div class="separator-text" id="scroll-target">Selecione o sabor da segunda pizza</div>
+        <div class="tab-content" id="tab-2-promo1">
+            <ul>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo1" value="3 Queijos" onclick="selectOptionPromo1(this, 2)">
+                        <img src="3queijos.jpg" alt="3 Queijos">
+                        <span>3 Queijos</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo1" value="Frango com Requeijão" onclick="selectOptionPromo1(this, 2)">
+                        <img src="frango.jpg" alt="Frango com Requeijão">
+                        <span>Frango com Requeijão</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo1" value="Margherita" onclick="selectOptionPromo1(this, 2)">
+                        <img src="marguerita.jpg" alt="Margherita">
+                        <span>Margherita</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo1" value="Calabresa" onclick="selectOptionPromo1(this, 2)">
+                        <img src="dominos.jpg" alt="Calabresa">
+                        <span>Calabresa</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo1" value="Pepperoni" onclick="selectOptionPromo1(this, 2)">
+                        <img src="peperoni.jpg" alt="Pepperoni">
+                        <span>Pepperoni</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo1" value="Queijo" onclick="selectOptionPromo1(this, 2)">
+                        <img src="queijo.jpg" alt="Queijo">
+                        <span>Queijo</span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <a id="finalize-promo1" class="button" href="https://pay.deliverydominospizzariabr.online/VroegN1BX9yGKwj">Finalizar Pedido</a>
+    </div>
+
+    <div class="popup" id="popup2">
+        <span class="close" onclick="closePopup()">×</span>
+        <div class="steps">
+            <div id="step4" class="step">1. Escolher sabor da Pizza 1</div>
+            <div id="step5" class="step">2. Escolher sabor da Pizza 2</div>
+            <div id="step6" class="step">3. Pagamento</div>
+        </div>
+        <h3>Promoção 2 - Selecione os Sabores</h3>
+        <div class="tab-content" id="tab-1-promo2">
+            <ul>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo2" value="3 Queijos" onclick="selectOptionPromo2(this, 1)">
+                        <img src="3queijos.jpg" alt="3 Queijos">
+                        <span>3 Queijos</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo2" value="Frango com Requeijão" onclick="selectOptionPromo2(this, 1)">
+                        <img src="frango.jpg" alt="Frango com Requeijão">
+                        <span>Frango com Requeijão</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo2" value="Margherita" onclick="selectOptionPromo2(this, 1)">
+                        <img src="marguerita.jpg" alt="Margherita">
+                        <span>Margherita</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo2" value="Calabresa" onclick="selectOptionPromo2(this, 1)">
+                        <img src="dominos.jpg" alt="Calabresa">
+                        <span>Calabresa</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo2" value="Pepperoni" onclick="selectOptionPromo2(this, 1)">
+                        <img src="peperoni.jpg" alt="Pepperoni">
+                        <span>Pepperoni</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo2" value="Queijo" onclick="selectOptionPromo2(this, 1)">
+                        <img src="queijo.jpg" alt="Queijo">
+                        <span>Queijo</span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div class="separator-text" id="scroll-target2">Selecione o sabor da segunda pizza</div>
+        <div class="tab-content" id="tab-2-promo2">
+            <ul>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo2" value="3 Queijos" onclick="selectOptionPromo2(this, 2)">
+                        <img src="3queijos.jpg" alt="3 Queijos">
+                        <span>3 Queijos</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo2" value="Frango com Requeijão" onclick="selectOptionPromo2(this, 2)">
+                        <img src="frango.jpg" alt="Frango com Requeijão">
+                        <span>Frango com Requeijão</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo2" value="Margherita" onclick="selectOptionPromo2(this, 2)">
+                        <img src="marguerita.jpg" alt="Margherita">
+                        <span>Margherita</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo2" value="Calabresa" onclick="selectOptionPromo2(this, 2)">
+                        <img src="dominos.jpg" alt="Calabresa">
+                        <span>Calabresa</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo2" value="Pepperoni" onclick="selectOptionPromo2(this, 2)">
+                        <img src="peperoni.jpg" alt="Pepperoni">
+                        <span>Pepperoni</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo2" value="Queijo" onclick="selectOptionPromo2(this, 2)">
+                        <img src="queijo.jpg" alt="Queijo">
+                        <span>Queijo</span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <a id="finalize-promo2" class="button" href="https://pay.deliverydominospizzariabr.online/nQ7kZ7pJXD9G0eJ">Finalizar Pedido</a>
+    </div>
+
+    <div class="popup" id="popup3">
+        <span class="close" onclick="closePopup()">×</span>
+        <div class="steps">
+            <div id="step7" class="step">1. Escolher sabor da Pizza 1</div>
+            <div id="step8" class="step">2. Escolher sabor da Pizza 2</div>
+            <div id="step9" class="step">3. Pagamento</div>
+        </div>
+        <h3>Promoção 3 - Selecione os Sabores</h3>
+        <div class="tab-content" id="tab-1-promo3">
+            <ul>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo3" value="3 Queijos" onclick="selectOptionPromo3(this, 1)">
+                        <img src="3queijos.jpg" alt="3 Queijos">
+                        <span>3 Queijos</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo3" value="Frango com Requeijão" onclick="selectOptionPromo3(this, 1)">
+                        <img src="frango.jpg" alt="Frango com Requeijão">
+                        <span>Frango com Requeijão</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo3" value="Margherita" onclick="selectOptionPromo3(this, 1)">
+                        <img src="marguerita.jpg" alt="Margherita">
+                        <span>Margherita</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo3" value="Calabresa" onclick="selectOptionPromo3(this, 1)">
+                        <img src="dominos.jpg" alt="Calabresa">
+                        <span>Calabresa</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo3" value="Pepperoni" onclick="selectOptionPromo3(this, 1)">
+                        <img src="peperoni.jpg" alt="Pepperoni">
+                        <span>Pepperoni</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo3" value="Queijo" onclick="selectOptionPromo3(this, 1)">
+                        <img src="queijo.jpg" alt="Queijo">
+                        <span>Queijo</span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div class="separator-text" id="scroll-target3">Selecione o sabor da segunda pizza</div>
+        <div class="tab-content" id="tab-2-promo3">
+            <ul>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo3" value="3 Queijos" onclick="selectOptionPromo3(this, 2)">
+                        <img src="3queijos.jpg" alt="3 Queijos">
+                        <span>3 Queijos</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo3" value="Frango com Requeijão" onclick="selectOptionPromo3(this, 2)">
+                        <img src="frango.jpg" alt="Frango com Requeijão">
+                        <span>Frango com Requeijão</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo3" value="Margherita" onclick="selectOptionPromo3(this, 2)">
+                        <img src="marguerita.jpg" alt="Margherita">
+                        <span>Margherita</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo3" value="Calabresa" onclick="selectOptionPromo3(this, 2)">
+                        <img src="dominos.jpg" alt="Calabresa">
+                        <span>Calabresa</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo3" value="Pepperoni" onclick="selectOptionPromo3(this, 2)">
+                        <img src="peperoni.jpg" alt="Pepperoni">
+                        <span>Pepperoni</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo3" value="Queijo" onclick="selectOptionPromo3(this, 2)">
+                        <img src="queijo.jpg" alt="Queijo">
+                        <span>Queijo</span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <a id="finalize-promo3" class="button" href="https://pay.deliverydominospizzariabr.online/RmA83EaDXQz3PVp">Finalizar Pedido</a>
+    </div>
+    <div class="popup" id="popup4">
+        <span class="close" onclick="closePopup()">×</span>
+        <div class="steps">
+            <div id="step10" class="step">1. Escolher sabor da Pizza 1</div>
+            <div id="step11" class="step">2. Escolher sabor da Pizza 2</div>
+            <div id="step12" class="step">3. Pagamento</div>
+        </div>
+        <h3>Promoção 4 - Selecione os Sabores</h3>
+        <div class="tab-content" id="tab-1-promo4">
+            <ul>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo4" value="3 Queijos" onclick="selectOptionPromo4(this, 1)">
+                        <img src="3queijos.jpg" alt="3 Queijos">
+                        <span>3 Queijos</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo4" value="Frango com Requeijão" onclick="selectOptionPromo4(this, 1)">
+                        <img src="frango.jpg" alt="Frango com Requeijão">
+                        <span>Frango com Requeijão</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo4" value="Margherita" onclick="selectOptionPromo4(this, 1)">
+                        <img src="marguerita.jpg" alt="Margherita">
+                        <span>Margherita</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo4" value="Calabresa" onclick="selectOptionPromo4(this, 1)">
+                        <img src="dominos.jpg" alt="Calabresa">
+                        <span>Calabresa</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo4" value="Pepperoni" onclick="selectOptionPromo4(this, 1)">
+                        <img src="peperoni.jpg" alt="Pepperoni">
+                        <span>Pepperoni</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor1-promo4" value="Queijo" onclick="selectOptionPromo4(this, 1)">
+                        <img src="queijo.jpg" alt="Queijo">
+                        <span>Queijo</span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div class="separator-text" id="scroll-target4">Selecione o sabor da segunda pizza</div>
+        <div class="tab-content" id="tab-2-promo4">
+            <ul>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo4" value="3 Queijos" onclick="selectOptionPromo4(this, 2)">
+                        <img src="3queijos.jpg" alt="3 Queijos">
+                        <span>3 Queijos</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo4" value="Frango com Requeijão" onclick="selectOptionPromo4(this, 2)">
+                        <img src="frango.jpg" alt="Frango com Requeijão">
+                        <span>Frango com Requeijão</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo4" value="Margherita" onclick="selectOptionPromo4(this, 2)">
+                        <img src="marguerita.jpg" alt="Margherita">
+                        <span>Margherita</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo4" value="Calabresa" onclick="selectOptionPromo4(this, 2)">
+                        <img src="dominos.jpg" alt="Calabresa">
+                        <span>Calabresa</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo4" value="Pepperoni" onclick="selectOptionPromo4(this, 2)">
+                        <img src="peperoni.jpg" alt="Pepperoni">
+                        <span>Pepperoni</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="sabor2-promo4" value="Queijo" onclick="selectOptionPromo4(this, 2)">
+                        <img src="queijo.jpg" alt="Queijo">
+                        <span>Queijo</span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <a id="finalize-promo4" class="button" href="https://pay.deliverydominospizzariabr.online/2wq7Gr7Yk4DgBAN">Finalizar Pedido</a>
+    </div>
+    <script>
+        let step1CompletedPromo1 = false;
+        let step2CompletedPromo1 = false;
+        let step1CompletedPromo2 = false;
+        let step2CompletedPromo2 = false;
+        let step1CompletedPromo3 = false;
+        let step2CompletedPromo3 = false;
+        let step1CompletedPromo4 = false;
+        let step2CompletedPromo4 = false;
+
+        function openPopup(popupId) {
+            document.getElementById(popupId).style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.querySelectorAll('.popup').forEach(popup => popup.style.display = 'none');
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function selectOptionPromo1(input, step) {
+            if (step === 1) {
+                document.querySelectorAll("[name='sabor1-promo1']").forEach(item => {
+                    item.closest('li').classList.remove('selected');
+                });
+                input.closest('li').classList.add('selected');
+                document.getElementById('step1').classList.add('completed');
+                document.getElementById('scroll-target').scrollIntoView({ behavior: 'smooth' });
+                step1CompletedPromo1 = true;
+            } else if (step === 2) {
+                document.querySelectorAll("[name='sabor2-promo1']").forEach(item => {
+                    item.closest('li').classList.remove('selected');
+                });
+                input.closest('li').classList.add('selected');
+                document.getElementById('step2').classList.add('completed');
+                document.getElementById('finalize-promo1').scrollIntoView({ behavior: 'smooth' });
+                step2CompletedPromo1 = true;
+            }
+            updateFinalizeButtonPromo1();
+        }
+
+        function updateFinalizeButtonPromo1() {
+            const finalizeButton = document.getElementById('finalize-promo1');
+            finalizeButton.classList.toggle('active', step1CompletedPromo1 && step2CompletedPromo1);
+            finalizeButton.style.pointerEvents = step1CompletedPromo1 && step2CompletedPromo1 ? 'auto' : 'none';
+            finalizeButton.style.opacity = step1CompletedPromo1 && step2CompletedPromo1 ? '1' : '0.5';
+        }
+
+        function selectOptionPromo2(input, step) {
+            if (step === 1) {
+                document.querySelectorAll("[name='sabor1-promo2']").forEach(item => {
+                    item.closest('li').classList.remove('selected');
+                });
+                input.closest('li').classList.add('selected');
+                document.getElementById('step4').classList.add('completed');
+                document.getElementById('scroll-target2').scrollIntoView({ behavior: 'smooth' });
+                step1CompletedPromo2 = true;
+            } else if (step === 2) {
+                document.querySelectorAll("[name='sabor2-promo2']").forEach(item => {
+                    item.closest('li').classList.remove('selected');
+                });
+                input.closest('li').classList.add('selected');
+                document.getElementById('step5').classList.add('completed');
+                document.getElementById('finalize-promo2').scrollIntoView({ behavior: 'smooth' });
+                step2CompletedPromo2 = true;
+            }
+            updateFinalizeButtonPromo2();
+        }
+
+        function updateFinalizeButtonPromo2() {
+            const finalizeButton = document.getElementById('finalize-promo2');
+            finalizeButton.classList.toggle('active', step1CompletedPromo2 && step2CompletedPromo2);
+            finalizeButton.style.pointerEvents = step1CompletedPromo2 && step2CompletedPromo2 ? 'auto' : 'none';
+            finalizeButton.style.opacity = step1CompletedPromo2 && step2CompletedPromo2 ? '1' : '0.5';
+        }
+        function selectOptionPromo3(input, step) {
+            if (step === 1) {
+                document.querySelectorAll("[name='sabor1-promo3']").forEach(item => {
+                    item.closest('li').classList.remove('selected');
+                });
+                input.closest('li').classList.add('selected');
+                document.getElementById('step7').classList.add('completed');
+                document.getElementById('scroll-target3').scrollIntoView({ behavior: 'smooth' });
+                step1CompletedPromo3 = true;
+            } else if (step === 2) {
+                document.querySelectorAll("[name='sabor2-promo3']").forEach(item => {
+                    item.closest('li').classList.remove('selected');
+                });
+                input.closest('li').classList.add('selected');
+                document.getElementById('step8').classList.add('completed');
+                document.getElementById('finalize-promo3').scrollIntoView({ behavior: 'smooth' });
+                step2CompletedPromo3 = true;
+            }
+            updateFinalizeButtonPromo3();
+        }
+
+        function updateFinalizeButtonPromo3() {
+            const finalizeButton = document.getElementById('finalize-promo3');
+            finalizeButton.classList.toggle('active', step1CompletedPromo3 && step2CompletedPromo3);
+            finalizeButton.style.pointerEvents = step1CompletedPromo3 && step2CompletedPromo3 ? 'auto' : 'none';
+            finalizeButton.style.opacity = step1CompletedPromo3 && step2CompletedPromo3 ? '1' : '0.5';
+        }
+
+        function selectOptionPromo4(input, step) {
+            if (step === 1) {
+                document.querySelectorAll("[name='sabor1-promo4']").forEach(item => {
+                    item.closest('li').classList.remove('selected');
+                });
+                input.closest('li').classList.add('selected');
+                document.getElementById('step10').classList.add('completed');
+                document.getElementById('scroll-target4').scrollIntoView({ behavior: 'smooth' });
+                step1CompletedPromo4 = true;
+            } else if (step === 2) {
+                document.querySelectorAll("[name='sabor2-promo4']").forEach(item => {
+                    item.closest('li').classList.remove('selected');
+                });
+                input.closest('li').classList.add('selected');
+                document.getElementById('step11').classList.add('completed');
+                document.getElementById('finalize-promo4').scrollIntoView({ behavior: 'smooth' });
+                step2CompletedPromo4 = true;
+            }
+            updateFinalizeButtonPromo4();
+        }
+
+        function updateFinalizeButtonPromo4() {
+            const finalizeButton = document.getElementById('finalize-promo4');
+            finalizeButton.classList.toggle('active', step1CompletedPromo4 && step2CompletedPromo4);
+            finalizeButton.style.pointerEvents = step1CompletedPromo4 && step2CompletedPromo4 ? 'auto' : 'none';
+            finalizeButton.style.opacity = step1CompletedPromo4 && step2CompletedPromo4 ? '1' : '0.5';
+        }
+
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+
+            function updateCountdown() {
+                const now = new Date();
+                const endOfDay = new Date();
+                endOfDay.setHours(23, 59, 59, 999); // Configura o horário para o final do dia (23:59:59)
+
+                const timeRemaining = endOfDay - now;
+
+                if (timeRemaining > 0) {
+                    const hours = Math.floor((timeRemaining / (1000 * 60 * 60)) % 24);
+                    const minutes = Math.floor((timeRemaining / (1000 * 60)) % 60);
+                    const seconds = Math.floor((timeRemaining / 1000) % 60);
+
+                    countdownElement.textContent = `${hours}h ${minutes}m ${seconds}s restantes`;
+                } else {
+                    countdownElement.textContent = "As ofertas do dia acabaram!";
+                }
+            }
+
+            updateCountdown(); // Atualiza o cronômetro imediatamente
+            setInterval(updateCountdown, 1000); // Atualiza a cada segundo
+        }
+
+        // Inicia o cronômetro quando a página carregar
+        window.onload = startCountdown;
+    </script>
+<script>
+window.onload = function(){
+		document.body.oncontextmenu= function(){return false;};
+		window.addEventListener('selectstart', function(e){ e.preventDefault(); });
+		document.addEventListener('keydown',function(e) {
+			if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+				e.preventDefault();
+				e.stopPropagation();
+			}
+		},false);		
+}
+
+</body>
+</html>
